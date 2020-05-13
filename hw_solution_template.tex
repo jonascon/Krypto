@@ -23,22 +23,22 @@
 % three.
 
 % THIS FIRST ONE IS YOU.
-\newcommand{\persnrX}{123456-7890}
-\newcommand{\nameX}{Alan}
-\newcommand{\familynameX}{Turing}
-\newcommand{\emailX}{alan@turing.hi}
+\newcommand{\persnrX}{970731-7559}
+\newcommand{\nameX}{Jonas}
+\newcommand{\familynameX}{Conneryd}
+\newcommand{\emailX}{conneryd@kth.se}
 
 % THE OTHER TWO ARE PEOPLE YOU HAVE DISCUSSED INFORMALLY WITH.
-\newcommand{\persnrY}{123456-7890}
-\newcommand{\nameY}{Mohammad}
-\newcommand{\familynameY}{Al-Khwarizmi}
-\newcommand{\emailY}{mohammad@alkhwarizmi.hi}
 
-\newcommand{\persnrZ}{123456-7890}
-\newcommand{\nameZ}{Ada}
-\newcommand{\familynameZ}{Lovelace}
-\newcommand{\emailZ}{ada@lovelace.hi}
+\newcommand{\persnrY}{961026-0995}
+\newcommand{\nameY}{Alexander}
+\newcommand{\familynameY}{Renaudin}
+\newcommand{\emailY}{aleren@kth.se}
 
+\newcommand{\persnrZ}{961021-5635}
+\newcommand{\nameZ}{Olle}
+\newcommand{\familynameZ}{Bergl\"of}
+\newcommand{\emailZ}{oberglof@kth.se}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% DO NOT TOUCH ANYTHING BELOW THIS LINE %%%%%%%%%%%%%%%%%%%%%%%
@@ -100,9 +100,11 @@
 
 % Add your macros here.
 
+\usepackage{cite}
 \newcommand{\TPOINTS}[1]{(#1T)}
 \newcommand{\IPOINTS}[1]{(#1I)}
-
+\newcommand{\Span}{\mathsf{Span}}
+\newcommand{\Z}{\mathbb{Z}}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,16 +159,16 @@
 \begin{problem}
   \begin{subproblem}[\TP{3}]
     NOT SOLVED % We leave this place holder here for improved readability.
-    Very trivial problem actually. I think I needn't say more than 
+    Very trivial problem actually. I think I needn't say more than
     \[
-			\int_{-\infty}^{\infty}e^{-x^2}dx = \sqrt\pi    
+			\int_{-\infty}^{\infty}e^{-x^2}dx = \sqrt\pi
     \]
   \end{subproblem}
   \begin{subproblem}[\TP{3}]
     NOT SOLVED % We leave this place holder here for improved readability.
   \end{subproblem}
   \begin{subproblem}[\TP{4}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    NOT SOLVED Ganska säker på att det är hybrid argument som ska till här.% We leave this place holder here for improved readability.
   \end{subproblem}
 \end{problem}
 
@@ -175,16 +177,39 @@
 
 \begin{problem}
   \begin{subproblem}[\TP{1}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    We use the defintion of Shannon entropy as stated in the course slides:
+    \[
+      H(X) = -\sum_{x\in X}\Pr[x]\log_2(\Pr[x])
+    \]
+    and from this expression directly compute the Shannon entropy of $X$: $H(X) \approx 3.175$. % We leave this place holder here for improved readability.
   \end{subproblem}
   \begin{subproblem}[\TP{2}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    In this assignment, we use the information regarding Huffman encodings in Chapter 2 of \cite{stinsonCryptographyTheoryPractice2006}. In general, an \emph{encoding} of a random variable $X$ over a binary channel is simply a function $f: X \to \{0, 1\}^*$, where we require that $f$ is injective. An encoding allows a series of events of $X$ to be encoded as a bitstring: If $S = x_1, x_2, x_n$ is a string of events of $X$, we encode $S$ as a bitstring by $S' = f(x_1) || \ldots f(x_n)$, where $||$ denotes concatenation. If each $x_i$ happens according to a specified probability distribution of $X$ so that
+    \[
+      \Pr[x_1,\ldots x_n] = \Pi_i^n \Pr[x_i],
+    \]
+    we say that the string $x_1, \ldots, x_n$ is produced by a \emph{memoryless source}.
+
+    The \emph{weighted average length} of an encoding $f$ is
+    \[
+      l(f) = \sum_{x\in X}\Pr[x] \lvert f(x) \rvert,
+    \]
+    and is a measure of its efficiency; a shorter weighted average length $l$ would imply that fewer bits would be required to describe a series of events of $X$ by using a string.
+
+    The \emph{Huffman encoding} of a random variable $X$ is an injective encoding that minimizes $l(f)$, so with $l$ as a measure of efficiency, the Huffman encoding is optimal. The Huffman encoding of $X$ can be informally described as the encoding achieved by the following algorithm:
+    \begin{enumerate}
+      \item Set the code of each event to be initially empty.
+      \item Add ''0'' to the code of the least likely event and ''1'' to the code of the next least likely event.
+      \item Combine the least likely and next least likely elements into a single new event whose probability is the the combined probability of the ingoing events. (If this event is assigned a bit, all the ingoing events get that bit added to their code).
+      \item Go back to step 2 until only a single element remains.
+      \item Output the resulting encoding of $X$.
+    \end{enumerate}
   \end{subproblem}
   \begin{subproblem}[\TP{1}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    Using the algorithm above, we arrive at an average expected length of the Huffman code $\mathsf{LenAvg} \approx 3.73$.
   \end{subproblem}
   \begin{subproblem}[\TP{1}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    Using the Huffman encoding, each event receives an \emph{integer} number of bits as their code, so in a sense the Huffman encoding is a ''binary approximation'' of the optimal code for each event. FoRTYDLIGA KANSKE.
   \end{subproblem}
 \end{problem}
 
@@ -200,16 +225,38 @@
 
 \begin{problem}
   \begin{subproblem}[\TP{2}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    Given a group $G_q$ of order $q$, a generator $g$ of $G$, and an element $h$ in $G$, find the smallest integer $n$ such that $g^n = h$.
   \end{subproblem}
   \begin{subproblem}[\TP{1}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+        Given a cyclic group $G$, for a randomly chosen generator $g$ of $G$ and a randomly chosen $h$ in $G$, find the smallest integer $n$ such that $g^n = h$.
   \end{subproblem}
   \begin{subproblem}[\TP{2}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    We describe the algorithm here and prove its properties in the next task. We use the approach of page 44 of \cite{galbraithMathematicsPublicKey2018}. We define $\mathcal{A}'$ as follows:
+
+    $\mathcal{A}'(g, h):$
+    \begin{enumerate}
+      \item Choose $x \in \Z/q\Z - \{ 0 \}$ and $y \in \Z/q\Z$ uniformly at random.
+      \item Form the pair $(g^x, h^xg^{xy})$.
+      \item Run $\mathcal{A}(g^x, h^xg^{xy}) = a$.
+      \item Output $a - y \pmod{q}$.
+    \end{enumerate}
+    If group operations can be performed in polynomial time, which we assume, this algorithm is clearly polynomial time if $\mathcal{A}$ is. If $a$ solves the discrete logarithm problem for the pair $(g^x, h^xg^{xy})$ so that $(g^x)^a = h^xg^{xy}$, then by multiplying by $g^{-xy}$ on both sides we find
+    \[
+    \begin{aligned}
+      (g^x)^{a-y} &= h^x \\
+      \iff g^{x(a-y)} &= h^x \\
+      \iff \left(g^{(a-y)}\right)^x &= h^x \\
+      \iff g^{(a-y)} &= h
+    \end{aligned}
+    \]
+    To find the discrete logarithm, we take $a-y \pmod{q}$. KOLLA DETTA EN EXTRA GnNG Therefore this algorithm solves the discrete logarithm problem for the pair $(g, h)$.
+
   \end{subproblem}
   \begin{subproblem}[\TP{1}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    Since $G_q \cong \Z/q\Z$ through the group isomorphism $\phi: G_q \to \Z/q\Z; a \mapsto g^a$ and $x$ is chosen uniformly at random, the elements $g^x$ and $h^x$ are chosen uniformly at random from the set of generators of $G_q$. Since $y$ is also chosen uniformly at random and multiplication by some fixed element in $G_q$ is an isomorphism $G_q \to G_q$, the element $h^xg^{xy}$ is an element in $G_q$ which is chosen uniformly at random, and in fact independently from $g^x$ since $x$ and $y$ are chosen independently. Therefore the pair $(g^x, h^xg^{xy})$ is a pair chosen uniformly and independently at random. KOLLA IGEN
+
+    Suppose $\mathcal{A}$ violates the average case discrete logarithm assumption. Then for a randomly chosen generator $g$ and a randomly chosen $h$ in $G_q$, we have that $\Pr[(\mathcal{A}(g, h) = \log_g (h)]$ is non-negligible. We proved that the elements in the pair $(g^x, h^xg^{xy})$ are in fact chosen independently and uniformly at random, so $\Pr[(\mathcal{A}(g^x,  h^xg^{xy}) = \log_{g^x}(h^xg^{xy})]$ is non-negligible. But then, since we can deterministically determine $\log_g (h)$ from $\log_{g^x}(h^xg^{xy})$ and do so in the algorithm $\mathcal{A}'$, we can conclude that $\Pr[\mathcal{A}'(g, h) = \log_g (h)]$ is in fact non-negligible. Therefore $\mathcal{A}'$ breaks the worst-case discrete logarithm assumption, as desired.
+
   \end{subproblem}
 \end{problem}
 
@@ -218,13 +265,104 @@
 
 \begin{problem}
   \begin{subproblem}[\TP{5}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    Let $r = \lceil \log q \rceil + t$. The strings $s \in \{0, 1\}^{\lceil \log q \rceil + t}$ are in direct correspondence with the integers up to the number $N  = \sum_{i = 1}^r 2^{i-1}$ through a change of basis $s = x_1\ldots, x_{r} \mapsto \sum_{i = 1}^N x_i 2^{i-1}$. We can write $N = kq + a$ so that $N \pmod{q} =a$ and $\lfloor N/q \rvert = k$. Using the thinking described in the hint, we can deduce that we have a bias when sampling numbers from $\{0, 1\}^{\lceil \log q \rceil + t}$: For those numbers $z$ in $\Z_q$ who fulfil $z \leq a$, a total of $k + 1$ different samples in $\{0, 1\}^{\lceil \log q \rceil + t}$ will correspond to $z$, namely $iq + z$ for $i = 0, 1, \ldots, k$ (each $i$ being a 'sheet of paper' as in the hint). Therefore $P_Y(z)= (k+1)/(N+1)$. (We get a term +1 because 0 is also a possible number). Meanwhile, for $z > a$ we have $k$ different samples corresponding to choosing $z$, namely $iq + z$ for $i = 0, 1, \ldots, k-1$ so $P_Y(z) = k/(N+1)$. Therefore we can write
+    \[
+    \begin{aligned}
+      \lVert P_Y - P_Z \rVert
+      &= \frac{1}{2}\sum_{x\in \Z_q} \lvert P_Y(x) - P_Z(x) \rvert \\
+      &= \frac{1}{2} \sum_{x \leq a}\left \lvert \frac{k+1}{N+1} - \frac{1}{q} \right \rvert + \frac{1}{2} \sum_{x > a}\left \lvert \frac{k}{N+1} - \frac{1}{q} \right \rvert.
+    \end{aligned}
+    \]
+    We have
+    \[
+    \begin{aligned}
+      \left \lvert\frac{k}{N+1} - \frac{1}{q} \right \rvert
+      &=\left \lvert \frac{k}{kq + a +1} - \frac{1}{q} \right \rvert\\
+      &=\left \lvert \frac{kq - (kq+a+1)}{q(kq + a +1)} \right \rvert \\
+      &=\left \lvert \frac{-(a+1)}{q(kq + a+1)} \right \rvert \\
+    \end{aligned}
+    \]
+    Similarly,
+    \[
+    \begin{aligned}
+      \left \lvert\frac{k+1}{N+1} - \frac{1}{q} \right \rvert
+      &=\left \lvert \frac{k+1}{kq + a +1} - \frac{1}{q} \right \rvert\\
+      &=\left \lvert \frac{(k+1)q - (kq+a+1)}{q(kq + a +1)} \right \rvert \\
+      &=\left \lvert \frac{q-(a+1)}{q(kq + a +1 )} \right \rvert \\
+    \end{aligned}
+    \]
+    so we can write
+    \[
+    \begin{aligned}
+      \lVert P_Y - P_Z \rVert
+      &= \frac{1}{2} \sum_{x \leq a}\left \lvert \frac{k+1}{N} - \frac{1}{q} \right \rvert + \frac{1}{2} \sum_{x > a}\left \lvert \frac{k}{N} - \frac{1}{q} \right \rvert \\
+      &= \frac{1}{2}(a+1)\frac{q-(a+1)}{q(kq + a +1 )} + \frac{1}{2}(q-(a+1)) \frac{a+1}{q(kq + a+1)} \\
+      &= \frac{q(a+1)-(a+1)^2}{q(kq + a +1 )}. \\
+    \end{aligned}
+    \]
+    As a sanity check, note that if $a=q-1$ so that we sample from what is essentially $\Z_q$ (that is, nothing has been cut off the top sheet of paper), this expression, and hence the statistical distance, is 0 as we expect. Note that $kq+a+1 = N+1 = 2^{\lceil \log q \rceil + t}$. The expression in the numerator has derivative $q- 2a+1$ which is zero when $a = (q-1)/2$. This is a local maximum since the second derivative is always negative, and fits intuition since $a=(q-1)/2$ corresponds to half of the top sheet being cut off, which should reasonably introduce maximal bias into the sampling. Using these results we find
+    \[
+    \begin{aligned}
+      \lVert P_Y - P_Z \rVert
+      &= \frac{q(a+1)-(a+1)^2}{q(kq + a +1 )} \\
+      &= \frac{q(a+1)-(a+1)^2}{q2^{\lceil \log q \rceil + t}} \\
+      &\leq \{a \leftarrow (q-1)/2 \} \\
+      &\leq \frac{q^2-1}{4q2^{\lceil \log q \rceil + t}} \\
+      &\leq \frac{q^2-1}{4q^2 2^{t}} \\
+      &= \frac{1-1/q^2}{4\cdot2^{t}}.
+    \end{aligned}
+    \]
+    I take the assignment phrasing to mean that we should find a bound $\beta(t)$ which is independent from $q$. Since $q$ is an odd prime and in particular $q \geq 3$, we can take $\beta(t) = \frac{1-1/3^2}{4\cdot2^{t}} = \frac{2}{9\cdot2^{t}}$. Note that in particular we get exponential decay in $t$.
+    \end{subproblem}
+
+  \begin{subproblem}[\TP{4}]
+    We think of the $X_i$ as being drawn sequentially: $X_1$ can be any nonzero vector. Since there are $q^k$ vectors in $\Z_q^k$, the probability of the sampling of $X_1$ being successful is $(q^k-1)/q^k$, with the 1 appearing to account for the zero vector. Moreover, the probability of a randomly chosen vector $w$ in $\Z_q^k$ being linearly independent from a given set of $i$ vectors $v_1,\ldots,v_i$ is the probability of $w$ not being in $\Span(v_1, \ldots, v_i)$. Since $v_1,\ldots, v_i$ are assumed to be linearly independent, there are $q^i$ vectors in $\Span(v_1, \ldots, v_i)$. The probability of $w$ not being in $\Span(v_1, \ldots, v_i)$ is therefore $(q^k-q^i)/q^k$. Because the sampling of $X_i$ for each $i$ are all independent events, we can write
+    \[
+    \begin{aligned}
+      \Pr[X_1, \ldots X_k \text{ lin. ind.}] &= \prod_{i= 1}^k \Pr[X_i \not\in \Span(X_1, \ldots, X_{i-1})] \\
+      &= \prod_{i= 1}^k \frac{q^k - q^{i-1}}{q^k} \\
+      &= \prod_{i= 1}^k \left(1-q^{i-1-k}\right) \\
+      &\geq (1-1/q)^k.
+    \end{aligned}
+    \]
+    Therefore we get
+    \[
+      \Pr[\Span(X_1, \ldots, X_k) \neq \Z_q^k] = 1 - \Pr[X_1, \ldots X_k \text{ lin. ind.}] \leq 1 - (1-1/q)^k,
+    \]
+    so we get $l(q, k) = 1 - (1-1/q)^k$.
+    This expression is close to 0 for $q >> k$, as we hope for.
   \end{subproblem}
   \begin{subproblem}[\TP{4}]
-    NOT SOLVED % We leave this place holder here for improved readability.
-  \end{subproblem}
-  \begin{subproblem}[\TP{4}]
-    NOT SOLVED % We leave this place holder here for improved readability.
+    We use a similar reasoning as in the previous assignment: The first sampled vector can be any vector $F(S)$, even for $S = 0$. If we have a set of $i$ vectors of the form $F(S_k), k = 1, \ldots, i$, the probability of sampling a vector $w$ of the form $F(S_w)$ which is not in $\Span(v_1, \ldots, v_i)$ amounts to $S_w$ not being equal to $S_k$ for any $k$, since $v_k$ and $v_l$ are linearly independent if and only if $S_k \neq S_l$ (or if $S_k$ or $S_l$ are zero). This follows from noting that the matrix
+    \[
+    V=
+      \begin{bmatrix}
+        \vdots & \vdots & \vdots & \vdots \\
+        F(S_1) & F(S_2) & \ldots & F(S_k) \\
+        \vdots & \vdots & \vdots & \vdots \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 & \ldots & 1 \\
+        S_1 & S_2 & \ldots & S_k \\
+        \vdots & \vdots & \vdots & \vdots \\
+        S_1^{k-1} & S_2^{k-1} & \ldots & S_k^{k-1} \\
+      \end{bmatrix}
+    \]
+    is (the transpose of) a \emph{Vandermonde matrix} CITERA whose determinant is well known to be $\det(V) = \prod_{1 \leq i < j \leq k} (S_j - S_i)$, which is nonzero (so its columns are linearly independent) in $\Z_q$ if and only if all $S_i, i = 1, \ldots, k$ are distinct. It follows that $\Pr[X_i \not\in \Span(X_1, \ldots, X_{i-1})] = (q-i-1)/q$, corresponding to $S_i$ not being equal to $S_n, n = 1, \ldots, i-1$, with the $S_n$ all being distinct. Therefore, we can write
+    \[
+    \begin{aligned}
+      \Pr[X_1, \ldots, X_k \text{ lin. ind.}]
+      &= \prod_{i=1}^k\Pr[X_i \not\in \Span{X_1, \ldots, X_{i-1}}] \\
+      &= \prod_{i=1}^k(q-(i-1))/q \\
+      &\geq (1-(k-1)/q)^k
+    \end{aligned}
+    \]
+    so
+    \[
+      \Pr[\Span(X_1, \ldots, X_k) \neq \Z_q^k] = 1 - \Pr[X_1, \ldots X_k \text{ lin. ind.}] \leq 1 - (1-(k-1)/q)^k.
+    \]
+    Again, this is very close to 0 for $q >> k$, as hoped for and expected. As a sanity check, this expression is thankfully 0 for $k=1$.
   \end{subproblem}
 \end{problem}
 
@@ -243,9 +381,13 @@
   \end{subproblem}
   \begin{subproblem}[\TP{2}]
     NOT SOLVED % We leave this place holder here for improved readability.
-  \end{subproblem}  
+  \end{subproblem}
 \end{problem}
 
+
+
+\bibliography{Krypto}{}
+\bibliographystyle{plain}
 \end{document}
 
 %%% Local Variables:
